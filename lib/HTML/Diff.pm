@@ -2,7 +2,7 @@
 
 package HTML::Diff;
 
-$VERSION = '0.53';
+$VERSION = '0.54';
 
 use strict;
 
@@ -14,9 +14,20 @@ our @EXPORT = qw(line_diff word_diff html_word_diff);
 # all those for which no closing tag is expected. In addition
 # the pattern below matches any tag which ends with a slash /
 
-our $UNBALANCED_TAGS = qr#br|hr|^p$|li|base|basefont|meta|link|col|colgroup|frame|input|isindex|area|embed|img|bgsound|marquee|\/[^ ]>$#i;
+our @UNBALANCED_TAGS = qw(br hr p li base basefont meta link 
+			  col colgroup frame input isindex area 
+			  embed img bgsound marquee);
 
 use Algorithm::Diff 'sdiff';
+
+sub member {
+    my ($item, @list) = @_;
+
+    foreach my $example (@list) {
+	return 1 if $example eq $item;
+    }
+    return 0;
+}
 
 sub html_word_diff {
     my ($left, $right) = @_;
@@ -52,9 +63,10 @@ sub html_word_diff {
                 }
 		return [$_, $tag];
 	    } else {
-		my ($tag) = m|^<\s*([^ \t\n\r>]*)|;
-		if ($tag =~ $UNBALANCED_TAGS)
-		{	                        # (tags without closers)
+		my ($tag) = m|^<\s*([^\s>]*)|;
+		$tag = lc $tag;
+		if (member($tag, @UNBALANCED_TAGS) || $tag =~ m#/\s*>$#)
+		{	                # (tags without correspond closer tags)
 		    return [$_, $tag];
 		} else {
 		    push @$tagstack, $tag;

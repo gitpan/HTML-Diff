@@ -40,16 +40,20 @@ my $test_text_d = 'PEOPLE said, "The bell is sounding." A strange wondrous was h
 # (e.g. "<b>a b c d</b>" -> "<i>a b c d</i>" considers all of "a b c d" 
 # as a change). It also tests that whitespace changes are effectively ignored.
 
-my $test_html_a = '<BASE HREF= "http://kt.zork.net/kde/archives.html">
+my $test_html_a = '<BASE HREF= "http://some-site.com/index.html">
 <center>
 <h1>
 <a href="http://www.cs.brown.edu/people/jes/acm.strategic.dirs.html">Strategic Directions for <b> Research in Theory of Computing </b></a>
 </h1>
 
+<!-- This is an HTML comment -->
+
 September 23, 1996
 </center>
 
 <p>
+
+< this is an unkown html tag />
 
 Anne Condon, University of Wisconsin <br>
 Faith Fich, University of Toronto <br>
@@ -174,14 +178,22 @@ ok(test_diff_continuity($test_html_a, $test_html_b,
 			\&HTML::Diff::html_word_diff, 1));
 my $result = HTML::Diff::html_word_diff($test_html_a, $test_html_b);
 
-#open OUT, ">expect";
-#print OUT Dumper($result);
-#close OUT;
+# Use the following lines to capture a "correct" result (when you
+# think you've got one) which can be used to validate future tests
+
+# open OUT, ">expect";
+# print OUT Dumper($result);
+# close OUT;
+
+# This value is the result we expect from HTML::Diff::html_word_diff()
+# If the actual result differs by one byte, it's a failure.
+# When the diff code is changed, you'll need to calculate a new expected
+#   value using the lines above, and paste the resulting value below.
 
 my $expect = [
     [
      '-',
-     '<BASE HREF= "http://kt.zork.net/kde/archives.html">
+     '<BASE HREF= "http://some-site.com/index.html">
 ',
      ''
     ],
@@ -214,27 +226,51 @@ my $expect = [
      '</a>
 </h1>
 
-September 23, 1996
+',
+     '</a>
+</h1>
+
+'
+    ],
+    [
+     '-',
+     '<!-- This is an HTML comment -->
+
+',
+     ''
+    ],
+    [
+     'u',
+     'September 23, 1996
 </center>
 
 <p>
 
-Anne Condon, University of Wisconsin <br>
+',
+     'September 23, 1996
+</center>
+
+<p>
+
+'
+    ],
+    [
+     '-',
+     '< this is an unkown html tag />
+
+',
+     ''
+    ],
+    [
+     'u',
+     'Anne Condon, University of Wisconsin <br>
 Faith Fich, University of Toronto <br>
 Greg N. Frederickson, Purdue University <br>
 Andrew V. Goldberg, NEC Research Institute <br>
 David S. Johnson, AT&amp;T Bell Laboratories <br>
 Michael C. Loui, University of Illinois at Urbana-Champaign  <br>
 Steven Mahaney, DIMACS ',
-            '</a>
-</h1>
-
-September 23, 1996
-</center>
-
-<p>
-
-Anne Condon, University of Wisconsin <br>
+     'Anne Condon, University of Wisconsin <br>
 Faith Fich, University of Toronto <br>
 Greg N. Frederickson, Purdue University <br>
 Andrew V. Goldberg, NEC Research Institute <br>

@@ -3,5 +3,5 @@
 use ExtUtils::MakeMaker;
 
 WriteMakefile(NAME => "HTML::Diff",
-	      VERSION => 0.53,
+	      VERSION => 0.54,
 	      INST_LIB => "./lib");
