@@ -2,7 +2,7 @@
 
 package HTML::Diff;
 
-$VERSION = '0.5';
+$VERSION = '0.53';
 
 use strict;
 
@@ -10,7 +10,11 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(line_diff word_diff html_word_diff);
 
-our $UNBALANCED_TAGS = qr/br|hr|^p$|li|\/>$/i;
+# This list of tags is taken from the XHTML spec and includes
+# all those for which no closing tag is expected. In addition
+# the pattern below matches any tag which ends with a slash /
+
+our $UNBALANCED_TAGS = qr#br|hr|^p$|li|base|basefont|meta|link|col|colgroup|frame|input|isindex|area|embed|img|bgsound|marquee|\/[^ ]>$#i;
 
 use Algorithm::Diff 'sdiff';
 

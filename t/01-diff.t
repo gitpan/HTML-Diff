@@ -40,7 +40,8 @@ my $test_text_d = 'PEOPLE said, "The bell is sounding." A strange wondrous was h
 # (e.g. "<b>a b c d</b>" -> "<i>a b c d</i>" considers all of "a b c d" 
 # as a change). It also tests that whitespace changes are effectively ignored.
 
-my $test_html_a = '<center>
+my $test_html_a = '<BASE HREF= "http://kt.zork.net/kde/archives.html">
+<center>
 <h1>
 <a href="http://www.cs.brown.edu/people/jes/acm.strategic.dirs.html">Strategic Directions for <b> Research in Theory of Computing </b></a>
 </h1>
@@ -179,9 +180,10 @@ my $result = HTML::Diff::html_word_diff($test_html_a, $test_html_b);
 
 my $expect = [
     [
-     undef,
-     undef,
-     undef
+     '-',
+     '<BASE HREF= "http://kt.zork.net/kde/archives.html">
+',
+     ''
     ],
     [
      'u',
