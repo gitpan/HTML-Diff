@@ -2,7 +2,7 @@
 
 package HTML::Diff;
 
-$VERSION = '0.54';
+$VERSION = '0.55';
 
 use strict;
 
@@ -23,10 +23,7 @@ use Algorithm::Diff 'sdiff';
 sub member {
     my ($item, @list) = @_;
 
-    foreach my $example (@list) {
-	return 1 if $example eq $item;
-    }
-    return 0;
+    return scalar(grep {$_ eq $item} @list);
 }
 
 sub html_word_diff {
@@ -56,6 +53,7 @@ sub html_word_diff {
 	if ($_ =~ /^<.*>/) {
 	    if ($_ =~ m|^</|) {
 		my ($tag) = m|^</\s*([^ \t\n\r>]*)|;
+		$tag = lc $tag;
 		# If we found the closer for the tag on top 
 		# of the stack, pop it off.
 		if ($$tagstack[-1] eq $tag) {
@@ -100,7 +98,8 @@ sub html_word_diff {
     foreach $ch (@$chunks) {
 	my ($signal, $left, $right) = @$ch;
 	if ($signal eq 'u' && $lastsignal ne 'u') {
-	    push @result, [$lastsignal, $lbuf, $rbuf];
+	    push @result, [$lastsignal, $lbuf, $rbuf]
+		unless $lastsignal eq '';
 	    $lbuf = "";
 	    $rbuf = "";
 	} elsif ($signal ne 'u' && $lastsignal eq 'u') {

@@ -4,7 +4,7 @@ use strict;
 
 use Test;
 
-BEGIN { plan tests => 4 }
+BEGIN { plan tests => 5 }
 
 use Getopt::Long;
 my ($verbose);
@@ -331,7 +331,7 @@ and other science and engineering disciplines.
 opportunities for future research.  Some research opportunities build
 bridges between theory of computing and other areas of computer
 science, and other science and engineering disciplines.  <p>'
-    ]
+    ],
 ];
 
 ok(deep_compare($result, $expect));
@@ -361,6 +361,24 @@ if ($verbose) {
     print "Result of diff:\n";
     print "[$_]\n" foreach (map {join "||", @$_} @$diffchunks);
 }
+
+sub check_diff_integrity {
+    my $failure = 0;
+    foreach my $chunk (@{$_[0]}) {
+	my ($mark, $left, $right) = @$chunk;
+	if ($mark ne 'u' && $left eq $right) {
+	    print "[$left] is [$right] but HTML::Diff thinks they're different!\n";
+	    $failure = 1;
+	}
+    }
+    return !$failure;
+}
+
+my $A = "<UL><li>monkey</UL><P>Search</P>";
+my $B = "<UL><li>monkey</UL><UL><li>llama</UL><P>Search</P>";
+
+$result = html_word_diff($A, $B);
+ok(check_diff_integrity($result));
 
 sub diff_file {
     my ($left, $right) = @_;
