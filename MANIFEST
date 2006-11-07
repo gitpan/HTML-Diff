@@ -5,3 +5,4 @@ README
 htmldiff
 t/01-diff.t
 lib/HTML/Diff.pm
+META.yml                                Module meta-data (added by MakeMaker)
