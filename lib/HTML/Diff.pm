@@ -2,7 +2,7 @@
 
 package HTML::Diff;
 
-$VERSION = '0.55';
+$VERSION = '0.561';
 
 use strict;
 
