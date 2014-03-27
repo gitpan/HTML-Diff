@@ -1,6 +1,6 @@
 package HTML::Diff;
 
-our $VERSION = '0.57';
+our $VERSION = '0.58';
 
 use 5.006;
 use strict;
@@ -220,7 +220,10 @@ all words in between.
 
 =head1 SEE ALSO
 
-L<Algorithm::Diff>
+L<Algorithm::Diff> provides the diff algorithm used in this module.
+
+L<XML::Diff> can generate a diff between two XML files, and also
+patch an XML file, given a diff.
 
 =head1 REPOSITORY
 

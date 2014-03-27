@@ -4,7 +4,7 @@
       "unknown"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "ExtUtils::MakeMaker version 6.9, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "ExtUtils::MakeMaker version 6.94, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -49,11 +49,14 @@
    },
    "release_status" : "stable",
    "resources" : {
+      "bugtracker" : {
+         "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=HTML-Diff"
+      },
       "repository" : {
          "type" : "git",
          "url" : "git://github.com/neilbowers/html-diff.git",
          "web" : "https://github.com/neilbowers/html-diff"
       }
    },
-   "version" : "0.57"
+   "version" : "0.58"
 }
